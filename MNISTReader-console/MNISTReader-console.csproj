@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D66CB2C9-A8DE-4943-9E5E-E86CCCE28474}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MNISTReader_console</RootNamespace>
-    <AssemblyName>MNISTReader-console</AssemblyName>
+    <RootNamespace>SheepReaper.Neural.MNISTReader</RootNamespace>
+    <AssemblyName>MNISTReader</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
