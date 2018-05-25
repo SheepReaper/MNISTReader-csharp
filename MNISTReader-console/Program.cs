@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,34 +6,21 @@ namespace SheepReaper.Neural.MNISTReader
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            try
-            {
-                Console.WriteLine("\nBegin\n");
+            Console.WriteLine("\nBegin\n");
 
-                var ImageCollection = new IdxDataSet();
-                ImageCollection.Load(@"C:\temp\t10k-images.idx3-ubyte", @"C:\temp\t10k-labels.idx1-ubyte");
+            var imageCollection = new IdxDataSet();
+            imageCollection.Load(@"C:\temp\t10k-images.idx3-ubyte", @"C:\temp\t10k-labels.idx1-ubyte");
 
-                foreach (var image in ImageCollection)
-                {
-                    Console.WriteLine(image.ToAscii());
-                }
+            foreach (var image in imageCollection) Console.WriteLine(image.ToAscii(true));
 
-                Console.WriteLine("\nEnd\n");
-                Console.ReadLine();
-            }finally {}
-            
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //    throw ex;
-            //    Console.ReadLine();
-            //}
+            Console.WriteLine("\nEnd\n");
+            Console.ReadLine();
         }
     }
 
-    internal class IdxDataSet : List<CharacterMap>
+    public class IdxDataSet : List<CharacterMap>
     {
         public string PathToDecompressedImageFile { get; set; }
         public string PathToDecompressedLabelFile { get; set; }
@@ -53,14 +39,13 @@ namespace SheepReaper.Neural.MNISTReader
             binLabels.ReadInt32();
             binLabels.ReadInt32();
 
-            var pixels = Utils.EmptyByteArray(numRows, numCols);
-
             for (var imageIndex = 0; imageIndex < numImages; imageIndex++)
             {
-                for (var rowIndex = 0; rowIndex < numRows; rowIndex++) 
-                    pixels[rowIndex] = binImages.ReadBytes(numCols);
+                var pixelArray = Utils.EmptyByteArray(numRows, numCols);
+                for (var rowIndex = 0; rowIndex < numRows; rowIndex++)
+                    pixelArray[rowIndex] = binImages.ReadBytes(numCols);
 
-                Add(new CharacterMap(pixels, binLabels.ReadByte()));
+                Add(new CharacterMap(pixelArray, binLabels.ReadByte()));
             }
 
             fsImages.Close();
@@ -70,13 +55,9 @@ namespace SheepReaper.Neural.MNISTReader
 
             ImageDimensions = new CharacterMapDimensions(numRows, numCols);
         }
-
-        public void Stream()
-        {
-        }
     }
 
-    internal class Utils
+    public class Utils
     {
         public static byte[][] EmptyByteArray(int numRows, int numCols)
         {
@@ -87,7 +68,7 @@ namespace SheepReaper.Neural.MNISTReader
         }
     }
 
-    internal class CharacterMap
+    public class CharacterMap
     {
         private byte[][] _pixels;
 
@@ -154,7 +135,7 @@ namespace SheepReaper.Neural.MNISTReader
         }
     }
 
-    internal class CharacterMapDimensions
+    public class CharacterMapDimensions
     {
         private readonly int[] _dimensions;
 
@@ -181,7 +162,7 @@ namespace SheepReaper.Neural.MNISTReader
         }
     }
 
-    internal static class Extensions
+    public static class Extensions
     {
         public static int ReadBigInt32(this BinaryReader br)
         {
